@@ -10,7 +10,7 @@ class User extends Component {
                     <img src={avatar_url} alt="" className="img-fluid"/>
                     <div className="card-body">
                         <h5 className="card-title">{login}</h5>
-                        <a href={html_url} className='btn btn-primary btn-sm'>Go Profile</a>
+                        <a href={html_url} className='btn btn-outline-danger btn-sm'>Go Profile</a>
                     </div>
                 </div>
             </div>
