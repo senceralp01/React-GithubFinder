@@ -18,22 +18,30 @@ export class Search extends Component {
 
     onSubmit(event) {
         event.preventDefault();
-        this.props.searchUsers(this.state.keyword);
-        this.setState({ keyword: '' })
+
+        if(this.state.keyword === ''){
+            this.props.setAlert('Please type a keyword.', 'danger');
+        }else {
+            this.props.searchUsers(this.state.keyword);
+            this.setState({ keyword: '' })
+        }
     }
 
     render() {
         return (
-            <form onSubmit={this.onSubmit}>
-                <div className="container my-3">
+            <div className="container my-3">
+                <form onSubmit={this.onSubmit}>
                     <div className="input-group">
                         <input type="text" value={this.state.keyword} onChange={this.onChange} className="form-control" />
                         <div className="input-group-append">
-                            <button type="submit" className="btn btn-secondary">Search</button>
+                            <button type="submit" className="btn btn-warning">Search</button>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+                { 
+                    this.props.showClearButton && <button onClick={this.props.clearResults} className="btn btn-secondary btn-sm btn-block mt-2">Clear Results</button>
+                }
+            </div> // Yukarıdaki expression'da && operatöründen önceki taraf true ise sağ taraf çalışır. False ise sol taraf çalışmaz.
         )
     }
 }

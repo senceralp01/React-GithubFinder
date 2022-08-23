@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import Navbar from './Navbar';
 import Users from './Users';
 import Search from './Search';
+import Alert from './Alert';
 import axios from 'axios';
 
 export class App extends Component {
@@ -9,9 +10,12 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.searchUsers = this.searchUsers.bind(this);
+    this.clearResults = this.clearResults.bind(this);
+    this.setAlert = this.setAlert.bind(this);
     this.state = {
       loading: false,
-      users: []
+      users: [],
+      alert: null
     }
   }
 
@@ -27,11 +31,29 @@ export class App extends Component {
     }, 1000)
   }
 
+  clearResults() {
+    this.setState({ users: [] })
+  }
+
+  setAlert(msg, type) {
+    this.setState({ alert: {msg, type} });
+
+    setTimeout(() => {
+      this.setState({ alert: null });
+    }, 3000)
+  }
+
   render() {
     return ( // Kapsayıcı elaman olarak boş yere <div> kullanmak yerine <React.Fragment> yada <Fragment> ya da <> kullanılır.
       <>
         <Navbar />
-        <Search searchUsers={this.searchUsers} />
+        <Alert alert={this.state.alert} />
+        <Search
+          searchUsers={this.searchUsers} 
+          clearResults={this.clearResults} 
+          showClearButton={this.state.users.length > 0? true:false} 
+          setAlert={this.setAlert}
+        />
         <Users users={this.state.users} loading={this.state.loading} />
       </>
     )
