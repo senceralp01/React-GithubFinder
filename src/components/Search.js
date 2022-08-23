@@ -18,7 +18,8 @@ export class Search extends Component {
 
     onSubmit(event) {
         event.preventDefault();
-        console.log(this.state.keyword);
+        this.props.searchUsers(this.state.keyword);
+        this.setState({ keyword: '' })
     }
 
     render() {
@@ -26,7 +27,7 @@ export class Search extends Component {
             <form onSubmit={this.onSubmit}>
                 <div className="container my-3">
                     <div className="input-group">
-                        <input type="text" onChange={this.onChange} className="form-control" />
+                        <input type="text" value={this.state.keyword} onChange={this.onChange} className="form-control" />
                         <div className="input-group-append">
                             <button type="submit" className="btn btn-secondary">Search</button>
                         </div>

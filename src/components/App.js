@@ -8,19 +8,20 @@ export class App extends Component {
 
   constructor(props) {
     super(props);
+    this.searchUsers = this.searchUsers.bind(this);
     this.state = {
       loading: false,
       users: []
     }
   }
 
-  componentDidMount() {
+  searchUsers(keyword) {
     this.setState({loading: true});
     setTimeout(() => {
       axios
-      .get('https://api.github.com/users')
+      .get(`https://api.github.com/search/users?q=${keyword}`)
       .then(response => this.setState({
-        users: response.data,
+        users: response.data.items,
         loading: false
       }))
     }, 1000)
@@ -30,7 +31,7 @@ export class App extends Component {
     return ( // Kapsayıcı elaman olarak boş yere <div> kullanmak yerine <React.Fragment> yada <Fragment> ya da <> kullanılır.
       <>
         <Navbar />
-        <Search />
+        <Search searchUsers={this.searchUsers} />
         <Users users={this.state.users} loading={this.state.loading} />
       </>
     )
