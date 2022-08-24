@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react'
+import { BrowserRouter, Route, Switch, Link, NavLink} from 'react-router-dom';
 import Navbar from './Navbar';
 import Users from './Users';
 import Search from './Search';
 import Alert from './Alert';
+import About from './About';
 import axios from 'axios';
 
 export class App extends Component {
@@ -45,17 +47,24 @@ export class App extends Component {
 
   render() {
     return ( // Kapsayıcı elaman olarak boş yere <div> kullanmak yerine <React.Fragment> yada <Fragment> ya da <> kullanılır.
-      <>
+      <BrowserRouter>
         <Navbar />
         <Alert alert={this.state.alert} />
-        <Search
-          searchUsers={this.searchUsers} 
-          clearResults={this.clearResults} 
-          showClearButton={this.state.users.length > 0? true:false} 
-          setAlert={this.setAlert}
-        />
-        <Users users={this.state.users} loading={this.state.loading} />
-      </>
+        <Switch>
+          <Route exact path="/" render={ props => (
+              <>
+                <Search
+                  searchUsers={this.searchUsers} 
+                  clearResults={this.clearResults} 
+                  showClearButton={this.state.users.length > 0? true:false} 
+                  setAlert={this.setAlert}
+                />
+                <Users users={this.state.users} loading={this.state.loading} />
+              </>
+          )} />
+          <Route path="/about" component={About} />
+        </Switch>
+      </BrowserRouter>
     )
   }
 }
