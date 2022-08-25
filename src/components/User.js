@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 class User extends Component {
     render() {
-        const {login, id, avatar_url, html_url} = this.props.user;
+        const {login, id, avatar_url, html_url} = this.props.user; // destructer
         
         return (
             <div className="col-md-4 col-sm-6 col-lg-3">
