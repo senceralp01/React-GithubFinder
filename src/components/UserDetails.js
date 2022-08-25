@@ -1,21 +1,22 @@
 import React, { Component, Fragment } from 'react'
 import Loading from './Loading';
+import Repos from './Repos';
 
 class UserDetails extends Component {   
     componentDidMount() {
         // console.log(this.props);
         this.props.getUser(this.props.match.params.login);
-        console.log(this.props.user);
+        this.props.getUserRepos(this.props.match.params.login);
     }
 
     render() {
-        const {loading} = this.props; // destructer
-        const {name, avatar_url, location, html_url, bio, blog, followers, following, public_repos} = this.props.user; //destructer
+        const {loading, repos} = this.props; // destructor
+        const {name, avatar_url, location, html_url, bio, blog, followers, following, public_repos, login} = this.props.user; //destructor
 
         if (loading) return <Loading />
 
         return (
-            <div className="container mt-3">
+            <div className="container my-3">
                 <div className="row">
                     <div className="col-md-3">
                         <div className="card">
@@ -50,9 +51,11 @@ class UserDetails extends Component {
                                     <span className="badge badge-success m-1">Follower: {followers}</span>
                                     <span className="badge badge-warning m-1">Following: {following}</span>
                                     <span className="badge badge-secondary m-1">Repos: {public_repos}</span>
-                                </div>
-                                
+                                </div>           
                             </div>
+                            <ul className="list-group list-group-flush">
+                                <Repos repos={repos} />
+                            </ul>
                         </div>
                     </div>
                 </div>

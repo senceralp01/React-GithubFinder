@@ -7,7 +7,6 @@ import Alert from './Alert';
 import About from './About';
 import axios from 'axios';
 import UserDetails from './UserDetails';
-
 export class App extends Component {
 
   constructor(props) {
@@ -16,10 +15,12 @@ export class App extends Component {
     this.clearResults = this.clearResults.bind(this);
     this.setAlert = this.setAlert.bind(this);
     this.getUser = this.getUser.bind(this);
+    this.getUserRepos = this.getUserRepos.bind(this);
     this.state = {
       loading: false,
       users: [],
       user: {},
+      repos: [],
       alert: null
     }
   }
@@ -40,6 +41,15 @@ export class App extends Component {
         .get(`https://api.github.com/users/${username}`)
         .then(response => this.setState({ user: response.data, loading: false }))
     },1000)
+  }
+
+  getUserRepos(username) {
+    this.setState({loading: true});
+    setTimeout(() => {
+      axios
+        .get(`https://api.github.com/users/${username}/repos`)
+        .then(response => this.setState({ repos: response.data, loading: false }))
+    }, 1000)
   }
 
   clearResults() {
@@ -72,8 +82,14 @@ export class App extends Component {
               </>
           )} />
           <Route path="/about" component={About} />
-          <Route path="/user/:login" render={ props => ( // {...props} -> destructer
-            <UserDetails {...props} getUser={this.getUser} user={this.state.user} loading={this.state.loading} />
+          <Route path="/user/:login" render={ props => ( // {...props} -> destructor
+            <UserDetails 
+              {...props} 
+              getUser={this.getUser} 
+              getUserRepos = {this.getUserRepos}
+              user={this.state.user} 
+              repos={this.state.repos}
+              loading={this.state.loading} />
           )} />
         </Switch>
       </BrowserRouter>
