@@ -13,7 +13,7 @@ export class Navbar extends Component {
                 <div className="collapse navbar-collapse">
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item">
-                            <Link to="about" className="nav-link" >About</Link>
+                            <Link to="/about" className="nav-link" >About</Link>
                         </li>
                     </ul>
                 </div>
