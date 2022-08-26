@@ -3,7 +3,8 @@
 // 2) Stateless function component (Stateless)
 
 // React 16.8 sürümünden itibaren: function component + Hook => Stateful component
-// Aartık Class component kullanmak yerine bu alternatif kullanılabilir. Özellikle ES6'ya hakim olmayanlar kullanabilir.
+// Artık Class component kullanmak yerine bu alternatif kullanılabilir. Özellikle ES6'ya hakim olmayanlar kullanabilir.
+// Ayrıca class component'e göre daha yalın ve sade bir kullanımı vardır.
 
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom';
