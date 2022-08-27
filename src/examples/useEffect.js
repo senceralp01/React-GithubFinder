@@ -43,7 +43,7 @@ const App = (props) => {
 
     // İkinci parametre gönderilirse:
     // Bu durumda useEffect, class component'deki componentDidMount'a karşılık gelmektedir.
-    // Komponent oluşturulduğu anda tetiklenir.
+    // Sadece komponent oluşturulduğu anda tetiklenir.
     useEffect(() => {
         console.log('useEffect, componentDidMount olarak çalıştı.')
     }, [])
