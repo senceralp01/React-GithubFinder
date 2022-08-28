@@ -7,6 +7,7 @@ import Alert from './Alert';
 import About from './About';
 import axios from 'axios';
 import UserDetails from './UserDetails';
+
 export class App extends Component {
 
   constructor(props) {
@@ -82,9 +83,9 @@ export class App extends Component {
               </>
           )} />
           <Route path="/about" component={About} />
-          <Route path="/user/:login" render={ props => ( // {...props} -> destructor
+          <Route path="/user/:login" render={ props => ( // Buradaki props parametresi hem Route özelliğinden gelen propsları hem de bizim yazdığımız propsları kapsayıcıdır.   
             <UserDetails 
-              {...props} 
+              {...props} // destructor
               getUser={this.getUser} 
               getUserRepos = {this.getUserRepos}
               user={this.state.user} 
@@ -96,5 +97,10 @@ export class App extends Component {
     )
   }
 }
+
+// UserDetails componenti çalışma mantığı:
+// User componenti içerisindeki Go Profile butonunun to linki ile UserDetails'in bağlı olduğu Route'un path linki arasında login parametresi sayesinde bir bağ oluşturulur.
+// Kullanıcı User componenti içerisindeki Go Profile butonuna bastığında ilgili Link içerisindeki to attribute'üne bağlı linkte yer alan login bilgisi, ilgili Route'un props bilgileri içerisindeki match.params altına girer. UserDetails'in altında olduğu Route aktif olduğu için UserDetails komponenti sayfada oluşturulur.
+// Bu Route altında yani UserDetails ile aynı seviyede başka bir komponent varsa ilgili Route aktif olduğu için o komponent de çalışır.
 
 export default App

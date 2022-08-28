@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter, Route, Switch, Link, NavLink} from 'react-router-dom';
 import Navbar from './Navbar';
 import Users from './Users';
@@ -7,95 +7,93 @@ import Alert from './Alert';
 import About from './About';
 import axios from 'axios';
 import UserDetails from './UserDetails';
-export class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.searchUsers = this.searchUsers.bind(this);
-    this.clearResults = this.clearResults.bind(this);
-    this.setAlert = this.setAlert.bind(this);
-    this.getUser = this.getUser.bind(this);
-    this.getUserRepos = this.getUserRepos.bind(this);
-    this.state = {
-      loading: false,
-      users: [],
-      user: {},
-      repos: [],
-      alert: null
-    }
-  }
+const App = () => {
 
-  searchUsers(keyword) {
-    this.setState({loading: true});
+  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState(null);
+  const [repos, setRepos] = useState([]);
+
+  const searchUsers = (keyword) => {
+    setLoading(true);
     setTimeout(() => {
       axios
       .get(`https://api.github.com/search/users?q=${keyword}`)
-      .then(response => this.setState({ users: response.data.items, loading: false }))
+      .then(response => {
+        setUsers(response.data.items)
+        setLoading(false)
+      });
     }, 1000)
   }
 
-  getUser(username) {
-    this.setState({loading: true});
+  const getUser = (username) => {
+    setLoading(true);
     setTimeout(() => {
       axios
         .get(`https://api.github.com/users/${username}`)
-        .then(response => this.setState({ user: response.data, loading: false }))
+        .then(response => { 
+          setUser(response.data); 
+          setLoading(false) 
+        })
     },1000)
   }
 
-  getUserRepos(username) {
-    this.setState({loading: true});
+  const getUserRepos = (username) => {
+    setLoading(true);
     setTimeout(() => {
       axios
         .get(`https://api.github.com/users/${username}/repos`)
-        .then(response => this.setState({ repos: response.data, loading: false }))
+        .then(response => { 
+          setRepos(response.data); 
+          setLoading(false) 
+        })
     }, 1000)
   }
 
-  clearResults() {
-    this.setState({ users: [] })
+  const clearResults = () => {
+    setUsers([]);
   }
 
-  setAlert(msg, type) {
-    this.setState({ alert: {msg, type} });
+  const showAlert = (msg, type) => { //setAlert çakışması olmasın diye showAlert olarak değiştirildi.
+    setAlert( {msg, type} );
 
     setTimeout(() => {
-      this.setState({ alert: null });
+      setAlert(null)
     }, 1000)
   }
 
-  render() {
-    return ( // Kapsayıcı elaman olarak boş yere <div> kullanmak yerine <React.Fragment> yada <Fragment> ya da <> kullanılır.
-      <BrowserRouter>
-        <Navbar />
-        <Alert alert={this.state.alert} />
-        <Switch>
-          <Route exact path="/" render={ props => (
-              <>
-                <Search
-                  searchUsers={this.searchUsers} 
-                  clearResults={this.clearResults} 
-                  showClearButton={this.state.users.length > 0? true:false} 
-                  setAlert={this.setAlert}
-                />
-                <Users users={this.state.users} loading={this.state.loading} />
-              </>
-          )} />
-          <Route path="/about" component={About} />
-          <Route path="/user/:login" render={ props => ( // Buradaki props parametresi hem Route özelliğinden gelen propsları hem de bizim yazdığımız propsları kapsayıcıdır.   
-            <UserDetails 
-              {...props} // destructor
-              getUser={this.getUser} 
-              getUserRepos = {this.getUserRepos}
-              user={this.state.user} 
-              repos={this.state.repos}
-              loading={this.state.loading} />
-          )} />
-        </Switch>
-      </BrowserRouter>
-    )
+  return ( // Kapsayıcı elaman olarak boş yere <div> kullanmak yerine <React.Fragment> yada <Fragment> ya da <> kullanılır.
+    <BrowserRouter>
+      <Navbar />
+      <Alert alert={alert} />
+      <Switch>
+        <Route exact path="/" render={ props => (
+            <>
+              <Search
+                searchUsers={searchUsers} 
+                clearResults={clearResults} 
+                showClearButton={users.length > 0? true:false} 
+                showAlert={showAlert}
+              />
+              <Users users={users} loading={loading} />
+            </>
+        )} />
+        <Route path="/about" component={About} />
+        <Route path="/user/:login" render={ props => ( // Buradaki props parametresi hem Route özelliğinden gelen propsları hem de bizim yazdığımız propsları kapsayıcıdır.   
+          <UserDetails 
+            {...props} // destructor
+            getUser={getUser} 
+            getUserRepos = {getUserRepos}
+            user={user} 
+            repos={repos}
+            loading={loading} />
+        )} />
+      </Switch>
+    </BrowserRouter>
+  )
   }
-}
 
 // UserDetails componenti çalışma mantığı:
 // User componenti içerisindeki Go Profile butonunun to linki ile UserDetails'in bağlı olduğu Route'un path linki arasında login parametresi sayesinde bir bağ oluşturulur.
