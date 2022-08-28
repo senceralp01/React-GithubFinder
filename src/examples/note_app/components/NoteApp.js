@@ -2,6 +2,7 @@ import React, {useEffect, useReducer} from 'react'
 import notesReducer from '../reducers/notes'
 import NoteList from './NoteList'
 import AddNoteForm from './AddNoteForm'
+import NotesContext from '../context/notes-context'
 
 const NoteApp = () => {
     // const [notes, setNotes] = useState([]);
@@ -18,31 +19,36 @@ const NoteApp = () => {
         localStorage.setItem('notesData', JSON.stringify(notes));
     }, [notes]);
 
-    const removeNote = (title) => {
-        // setNotes(notes.filter((note) => note.title !== title));
-        dispatch({type: 'REMOVE_NOTE', title}) // 1.parametre notesReducer'daki action.type'a, 2.parametre ise action.title'a gönderilir.
-    }
 
+    // context içerisine dispatch'i dahil ettiğimiz için removeNote metoduna gerek kalmadı.
+    // const removeNote = (title) => {
+    //     // setNotes(notes.filter((note) => note.title !== title));
+    //     dispatch({type: 'REMOVE_NOTE', title}) // 1.parametre notesReducer'daki action.type'a, 2.parametre ise action.title'a gönderilir.
+    // }
+
+    //Aşağıda context provider içerisinde gönderdiğimiz değerler kapsayıcı context'in içerisindeki tüm componentlere gönderilir. İlgili component'lerde karşılama props aracılığıyla değil useContext aracılığıyla yapılır.
     return (
-        <div className="container p-5">
-            <div className="card mb-3">
-                <div className="card-header">Notes</div>
-                {
-                    notes &&
-                    <table className="table table-sm table-striped mb-0">
-                        <tbody>
-                            <NoteList removeNote={removeNote} notes={notes} />
-                        </tbody>
-                    </table>
-                }
+        <NotesContext.Provider value={{notes, dispatch}} >
+            <div className="container p-5">
+                <div className="card mb-3">
+                    <div className="card-header">Notes</div>
+                    {
+                        notes &&
+                        <table className="table table-sm table-striped mb-0">
+                            <tbody>
+                                <NoteList />
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div className="card mb-3">
+                    <div className="card-header">Add a New Note</div>
+                    <div className="card-body">
+                    <AddNoteForm />
+                </div>
+                </div>
             </div>
-            <div className="card mb-3">
-                <div className="card-header">Add a New Note</div>
-                <div className="card-body">
-                <AddNoteForm dispatch={dispatch} />
-            </div>
-            </div>
-        </div>
+        </NotesContext.Provider>
     )
 }
 

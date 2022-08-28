@@ -1,12 +1,27 @@
-import React from "react"
+import React, { useContext } from "react"
 import Note from "./Note"
+import NotesContext from "../context/notes-context"
 
-// Dikkat edilirse buradaki props'lar NoteList komponenti içerisinde kullanılmadan Note komponentine aktarıldı. Bu tür bir geçiş büyük uygulamalarda daha zor olacağı için Context yapısı geliştirilmiştir. Bunu bir sonraki adımda useContext Hook'u kullanarak uygulayacağız.
+// Neden useContext Hook kullanıyoruz:
+// Dikkat edilirse buradaki props'lar NoteList komponenti içerisinde kullanılmadan Note komponentine aktarıldı. Bu tür bir geçiş büyük uygulamalarda daha zor olacağı için Context yapısı geliştirilmiştir.
 
-const NoteList = ({removeNote, notes}) => {
+// const NoteList = ({removeNote}) => {
+//     const {notes} = useContext(NotesContext);
+//     return (
+//         notes.map((note) => (
+//             <Note key={note.title} removeNote={removeNote} note={note} />
+//         ))
+//     )
+// }
+
+
+// useContext Hook
+const NoteList = () => {
+    const {removeNote} = useContext(NotesContext)
+    const {notes} = useContext(NotesContext);
     return (
         notes.map((note) => (
-            <Note key={note.title} removeNote={removeNote} note={note} />
+            <Note key={note.title} note={note} />
         ))
     )
 }
