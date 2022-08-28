@@ -2,6 +2,9 @@ import React, {useState, useEffect, useReducer} from 'react'
 import ReactDOM from 'react-dom'
 import '../styles/main.scss'
 
+// Reducer büyük uygulamalarda işlem kalabalıklığının önüne geçmek için kullanılır. useState kullanarak methodlar yazmak daha küçük uygulamalarda kullanılabilir fakat proje büyüdükçe useReducer kullanmak, uygulamaya müdahale etmek açısından, yazılan methodları bir yerden yönetmek adına daha mantıklıdır.
+
+// Oluşturulan switch-case yapısı içerisinde state içerisinde yapılmak istenen değişiklikler tanımlanır. Bu bizim Reducer'ımızdır. useReducer ile oluşturduğumuz Reducer arasında bağlantı kurarız. 
 const notesReducer = (state, action) => {
     switch(action.type) {
         case 'POPULATE_NOTES':
@@ -27,7 +30,7 @@ const NoteApp = () => {
     useEffect(() => {
         const notesData = JSON.parse(localStorage.getItem('notesData'));
         if(notesData){
-            dispatch({type: 'PUPULATE_NOTES', notes: notesData}) // 1.parametre notesReducer'daki action.type'a, 2.parametre ise action.notes'a gönderilir.
+            dispatch({type: 'POPULATE_NOTES', notes: notesData}) // 1.parametre notesReducer'daki action.type'a, 2.parametre ise action.notes'a gönderilir.
         }
     }, []);
 
@@ -52,7 +55,6 @@ const NoteApp = () => {
             setTitle('');
             setBody('');
         }
-        console.log(notes);
     }
 
     const removeNote = (title) => {
