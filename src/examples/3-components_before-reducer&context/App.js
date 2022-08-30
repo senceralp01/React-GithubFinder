@@ -7,7 +7,6 @@ import Alert from './Alert';
 import About from './About';
 import axios from 'axios';
 import UserDetails from './UserDetails';
-import GithubState from '../context/githubState';
 
 const App = () => {
 
@@ -16,6 +15,18 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
   const [repos, setRepos] = useState([]);
+
+  const searchUsers = (keyword) => {
+    setLoading(true);
+    setTimeout(() => {
+      axios
+      .get(`https://api.github.com/search/users?q=${keyword}`)
+      .then(response => {
+        setUsers(response.data.items)
+        setLoading(false)
+      });
+    }, 1000)
+  }
 
   const getUser = (username) => {
     setLoading(true);
@@ -53,36 +64,34 @@ const App = () => {
     }, 1000)
   }
 
-  // <GithubState></GithubState>'i context provider olarak kullandık.
   return ( // Kapsayıcı elaman olarak boş yere <div> kullanmak yerine <React.Fragment> yada <Fragment> ya da <> kullanılır.
-    <GithubState>
-      <BrowserRouter>
-        <Navbar />
-        <Alert alert={alert} />
-        <Switch>
-          <Route exact path="/" render={ props => (
-              <>
-                <Search 
-                  clearResults={clearResults} 
-                  showClearButton={users.length > 0? true:false} 
-                  showAlert={showAlert}
-                />
-                <Users />
-              </>
-          )} />
-          <Route path="/about" component={About} />
-          <Route path="/user/:login" render={ props => ( // Buradaki props parametresi hem Route özelliğinden gelen propsları hem de bizim yazdığımız propsları kapsayıcıdır.   
-            <UserDetails 
-              {...props} // destructor
-              getUser={getUser} 
-              getUserRepos = {getUserRepos}
-              user={user} 
-              repos={repos}
-              loading={loading} />
-          )} />
-        </Switch>
-      </BrowserRouter>
-    </GithubState>
+    <BrowserRouter>
+      <Navbar />
+      <Alert alert={alert} />
+      <Switch>
+        <Route exact path="/" render={ props => (
+            <>
+              <Search
+                searchUsers={searchUsers} 
+                clearResults={clearResults} 
+                showClearButton={users.length > 0? true:false} 
+                showAlert={showAlert}
+              />
+              <Users users={users} loading={loading} />
+            </>
+        )} />
+        <Route path="/about" component={About} />
+        <Route path="/user/:login" render={ props => ( // Buradaki props parametresi hem Route özelliğinden gelen propsları hem de bizim yazdığımız propsları kapsayıcıdır.   
+          <UserDetails 
+            {...props} // destructor
+            getUser={getUser} 
+            getUserRepos = {getUserRepos}
+            user={user} 
+            repos={repos}
+            loading={loading} />
+        )} />
+      </Switch>
+    </BrowserRouter>
   )
   }
 
