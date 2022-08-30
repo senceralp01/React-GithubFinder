@@ -1,8 +1,11 @@
-import React, { useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment, useContext } from 'react'
 import Loading from './Loading';
 import Repos from './Repos';
+import GithubContext from '../context/githubContext';
 
-const UserDetails = ({getUser, getUserRepos, match, loading, repos, user}) => {  
+const UserDetails = ({getUserRepos, match, repos}) => {
+
+    const {getUser, loading, user} = useContext(GithubContext);
 
     useEffect(() => { // componentDidMount
         getUser(match.params.login);

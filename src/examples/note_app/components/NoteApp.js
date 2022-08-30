@@ -6,7 +6,9 @@ import NotesContext from '../context/notes-context'
 
 const NoteApp = () => {
     // const [notes, setNotes] = useState([]);
-    const [notes, dispatch] = useReducer(notesReducer, [])
+    const [notes, dispatch] = useReducer(notesReducer, []);
+    // Buradaki ifadede notes, useReducer sayesinde notesReducer'dan dönen state bilgisi ile ilişkilendirilir.
+    // dispatch ise useReducer aracılığıyla notesReducer'dan dönen action bilgisi ile ilişkilendirilir.
 
     useEffect(() => {
         const notesData = JSON.parse(localStorage.getItem('notesData'));

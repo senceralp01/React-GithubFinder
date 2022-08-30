@@ -10,24 +10,9 @@ import UserDetails from './UserDetails';
 import GithubState from '../context/githubState';
 
 const App = () => {
-
-  const [users, setUsers] = useState([]);
-  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
   const [repos, setRepos] = useState([]);
-
-  const getUser = (username) => {
-    setLoading(true);
-    setTimeout(() => {
-      axios
-        .get(`https://api.github.com/users/${username}`)
-        .then(response => { 
-          setUser(response.data); 
-          setLoading(false) 
-        })
-    },1000)
-  }
 
   const getUserRepos = (username) => {
     setLoading(true);
@@ -39,10 +24,6 @@ const App = () => {
           setLoading(false) 
         })
     }, 1000)
-  }
-
-  const clearResults = () => {
-    setUsers([]);
   }
 
   const showAlert = (msg, type) => { //setAlert çakışması olmasın diye showAlert olarak değiştirildi.
@@ -62,11 +43,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" render={ props => (
               <>
-                <Search 
-                  clearResults={clearResults} 
-                  showClearButton={users.length > 0? true:false} 
-                  showAlert={showAlert}
-                />
+                <Search showAlert={showAlert} />
                 <Users />
               </>
           )} />
@@ -74,11 +51,8 @@ const App = () => {
           <Route path="/user/:login" render={ props => ( // Buradaki props parametresi hem Route özelliğinden gelen propsları hem de bizim yazdığımız propsları kapsayıcıdır.   
             <UserDetails 
               {...props} // destructor
-              getUser={getUser} 
               getUserRepos = {getUserRepos}
-              user={user} 
-              repos={repos}
-              loading={loading} />
+              repos={repos} />
           )} />
         </Switch>
       </BrowserRouter>

@@ -1,9 +1,9 @@
 import React, {useState, useContext} from 'react'
 import GithubContext from '../context/githubContext';
 
-const Search = ({setAlert, showClearButton, clearResults}) => {
+const Search = ({setAlert}) => {
 
-    const githubContext = useContext(GithubContext);
+    const {searchUsers, clearResults, users} = useContext(GithubContext);
     
     const [keyword, setKeyword] = useState('');
 
@@ -17,7 +17,7 @@ const Search = ({setAlert, showClearButton, clearResults}) => {
         if(keyword === ''){
             setAlert('Please type a keyword.', 'danger');
         }else {
-            githubContext.searchUsers(keyword);
+            searchUsers(keyword);
             setKeyword('');
         }
     }
@@ -33,7 +33,7 @@ const Search = ({setAlert, showClearButton, clearResults}) => {
                 </div>
             </form>
             { 
-                showClearButton && <button onClick={clearResults} className="btn btn-secondary btn-sm btn-block mt-2">Clear Results</button>
+                users.length>0  && <button onClick={clearResults} className="btn btn-secondary btn-sm btn-block mt-2">Clear Results</button>
             }
         </div> // Yukarıdaki expression'da && operatöründen önceki taraf true ise sağ taraf çalışır. False ise sol taraf çalışmaz.
     )
