@@ -1,9 +1,11 @@
 import React, {useState, useContext} from 'react'
-import GithubContext from '../context/githubContext';
+import AlertContext from '../context/alert/alertContext';
+import GithubContext from '../context/github/githubContext';
 
-const Search = ({setAlert}) => {
+const Search = () => {
 
     const {searchUsers, clearResults, users} = useContext(GithubContext);
+    const {showAlert} = useContext(AlertContext);
     
     const [keyword, setKeyword] = useState('');
 
@@ -15,7 +17,7 @@ const Search = ({setAlert}) => {
         event.preventDefault();
 
         if(keyword === ''){
-            setAlert('Please type a keyword.', 'danger');
+            showAlert('Please type a keyword.', 'danger');
         }else {
             searchUsers(keyword);
             setKeyword('');

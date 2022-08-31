@@ -6,37 +6,32 @@ import Search from './Search';
 import Alert from './Alert';
 import About from './About';
 import UserDetails from './UserDetails';
-import GithubState from '../context/githubState';
+import GithubState from '../context/github/githubState';
+import AlertState from '../context/alert/alertState';
 
 const App = () => {
-  const [alert, setAlert] = useState(null);
-
-  const showAlert = (msg, type) => { //setAlert çakışması olmasın diye showAlert olarak değiştirildi.
-    setAlert({ msg, type });
-
-    setTimeout(() => {
-      setAlert(null)
-    }, 1000)
-  }
 
   // <GithubState></GithubState>'i context provider olarak kullandık.
-  return ( // Kapsayıcı elaman olarak boş yere <div> kullanmak yerine <React.Fragment> yada <Fragment> ya da <> kullanılır.
+  // Kapsayıcı elaman olarak boş yere <div> kullanmak yerine <React.Fragment> yada <Fragment> ya da <> kullanılır.
+  return (
     <GithubState>
-      <BrowserRouter>
-        <Navbar />
-        <Alert alert={alert} />
-        <Switch>
-          <Route exact path="/" render={props => (
-            <>
-              <Search showAlert={showAlert} />
-              <Users />
-            </>
-          )} />
-          <Route path="/about" component={About} />
-          <Route path="/user/:login" component={UserDetails} />
-        </Switch>
-      </BrowserRouter>
-    </GithubState>
+      <AlertState>
+        <BrowserRouter>
+          <Navbar />
+          <Alert />
+          <Switch>
+            <Route exact path="/" render={props => (
+              <>
+                <Search />
+                <Users />
+              </>
+            )} />
+            <Route path="/about" component={About} />
+            <Route path="/user/:login" component={UserDetails} />
+          </Switch>
+        </BrowserRouter>
+      </AlertState>
+    </GithubState >
   )
 }
 
