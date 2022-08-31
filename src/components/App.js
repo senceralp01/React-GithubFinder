@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { BrowserRouter, Route, Switch, Link, NavLink } from 'react-router-dom';
 import Navbar from './Navbar';
-import Users from './Users';
-import Search from './Search';
+import NotFound from './NotFound';
+import Home from './Home';
 import Alert from './Alert';
 import About from './About';
 import UserDetails from './UserDetails';
@@ -12,7 +12,6 @@ import AlertState from '../context/alert/alertState';
 const App = () => {
 
   // <GithubState></GithubState>'i context provider olarak kullandık.
-  // Kapsayıcı elaman olarak boş yere <div> kullanmak yerine <React.Fragment> yada <Fragment> ya da <> kullanılır.
   return (
     <GithubState>
       <AlertState>
@@ -20,14 +19,10 @@ const App = () => {
           <Navbar />
           <Alert />
           <Switch>
-            <Route exact path="/" render={props => (
-              <>
-                <Search />
-                <Users />
-              </>
-            )} />
+            <Route exact path="/" component={Home} />
             <Route path="/about" component={About} />
             <Route path="/user/:login" component={UserDetails} />
+            <Route component={NotFound} ></Route>
           </Switch>
         </BrowserRouter>
       </AlertState>
