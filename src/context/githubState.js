@@ -39,7 +39,24 @@ const GithubState = (props) => {
             axios
                 .get(`https://api.github.com/users/${username}`)
                 .then(response => {
-                    dispatch({ type: "GET_USER", payload: response.data });
+                    dispatch({ 
+                        type: "GET_USER", 
+                        payload: response.data 
+                    });
+                })
+        }, 1000)
+    }
+
+    const getUserRepos = (username) => {
+        setLoading();
+        setTimeout(() => {
+            axios
+                .get(`https://api.github.com/users/${username}/repos`)
+                .then(response => {
+                    dispatch({ 
+                        type: "GET_REPOS", 
+                        payload: response.data 
+                    });
                 })
         }, 1000)
     }
@@ -60,7 +77,8 @@ const GithubState = (props) => {
             loading: state.loading,
             searchUsers,
             clearResults,
-            getUser
+            getUser,
+            getUserRepos
         }}>
         {props.children} {/*Buradaki props.children App.js'deki <GithubState> kapsayıcısının altındaki componentleri ifade ediyor. Normalde App.js içerisinde kapsayıcı olarak <GithubContext.Provider> kullanılsa buna gerek yok. Ama App.js içerisinde kapsayıcı olarak <GithubState> kullandığımız için <GithubState> altındaki componentlerin <GithubContext.Provider> ile ilişkilendirilmesi gerekiyor. */}
     </ GithubContext.Provider>

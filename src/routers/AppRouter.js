@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Link, NavLink } from 'react-router-dom'
 
+// Bu bir örnektir.
 
 const Nav = () => (
     <nav>

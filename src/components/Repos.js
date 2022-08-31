@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Repo from './Repo';
+import GithubContext from '../context/githubContext';
 
-const Repos = ( {repos} ) => { //destructor
+const Repos = () => { //destructor
+
+  const {repos} = useContext(GithubContext);
+
   return repos.map(repo => <Repo repo={repo} key={repo.id} />)
 }
 
