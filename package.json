@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "webpack-build": "webpack --mode production",
+    "build": "webpack --mode production",
     "start": "webpack-dev-server --open"
   },
   "keywords": [],
@@ -29,6 +29,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.2",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0"
   }
 }
