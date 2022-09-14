@@ -22,7 +22,7 @@ const App = () => {
             <Route exact path="/" component={Home} />
             <Route path="/about" component={About} />
             <Route path="/user/:login" component={UserDetails} />
-            <Route component={NotFound} ></Route>
+            <Route component={NotFound} />
           </Switch>
         </BrowserRouter>
       </AlertState>
